@@ -1,4 +1,4 @@
-package main
+package build
 
 import (
 	"fmt"
@@ -33,6 +33,7 @@ func main() {
 	if run == true {
 		fmt.Println("go to micro")
 	}
+	select {}
 }
 
 func LongForm() string {
