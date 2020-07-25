@@ -24,14 +24,16 @@ func main() {
 	c := pb.NewGreeterClient(newGRPCClient())
 	// Contact the server and print out its response.
 	name := "goto micro"
-
-	rsp, err := c.SayHello(context.Background(), &pb.HelloRequest{Name: name})
-	if err != nil {
-		log.Errorf("could not greet: %v", err)
-
+	for {
+		rsp, err := c.SayHello(context.Background(), &pb.HelloRequest{Name: name})
+		if err != nil {
+			log.Errorf("could not greet: %v", err)
+		} else {
+			log.Infof("Greeting: %s", rsp.Message)
+		}
+		time.Sleep(time.Second * 2)
 	}
-	log.Infof("Greeting: %s", rsp.Message)
-	time.Sleep(time.Second * 2)
+
 }
 
 func Duration(str string) time.Duration {

@@ -16,11 +16,7 @@ const (
 )
 
 type Resolver struct {
-	cli       *clientv3.Client
-	target    string
-	cancel    context.CancelFunc
-	ctx       context.Context
-	watchChan clientv3.WatchChan
+	cli *clientv3.Client
 }
 
 //NewResolver create a resolver for grpc
@@ -82,6 +78,7 @@ func (r *Resolver) watch(cc resolver.ClientConn, serviceName string) {
 					if err := json.Unmarshal(ev.Kv.Value, &resolverInfo); err == nil {
 						resolverObj.Put(resolverInfo)
 					}
+
 				// 硬删除
 				case mvccpb.DELETE:
 					var resolverInfo resolver.Address
@@ -125,7 +122,7 @@ func (a *AddressList) Delete(address resolver.Address) {
 func (a *AddressList) GetAddressList() []resolver.Address {
 	addrs := make([]resolver.Address, 0)
 	a.m.RLock()
-	defer a.m.RLock()
+	defer a.m.RUnlock()
 	for _, address := range a.store {
 		addrs = append(addrs, address)
 	}
