@@ -5,8 +5,8 @@ import (
 	"github.com/labstack/gommon/log"
 	"go.etcd.io/etcd/clientv3"
 	"google.golang.org/grpc"
+	pb "micro/chapter3/examples/helloworld"
 	"micro/mygrpc"
-	pb "micro/mygrpc/examples/helloworld"
 	"os"
 	"time"
 )

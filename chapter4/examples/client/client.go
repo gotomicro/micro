@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	"github.com/labstack/gommon/log"
+	"fmt"
 	"go.etcd.io/etcd/clientv3"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/resolver"
+	pb "micro/chapter4/examples/helloworld"
 	"micro/mygrpc"
-	pb "micro/mygrpc/examples/helloworld"
 	"time"
 )
 
@@ -23,16 +23,16 @@ func main() {
 	resolver.Register(mygrpc.NewResolver(cc))
 	c := pb.NewGreeterClient(newGRPCClient())
 	// Contact the server and print out its response.
-	name := "goto micro"
-	for {
-		rsp, err := c.SayHello(context.Background(), &pb.HelloRequest{Name: name})
-		if err != nil {
-			log.Errorf("could not greet: %v", err)
-		} else {
-			log.Infof("Greeting: %s", rsp.Message)
-		}
-		time.Sleep(time.Second * 2)
+	reply, err := c.Token(context.Background(), &pb.TokenRequest{
+		GrantType: "password",
+		Username:  "test",
+		Password:  "test",
+		Scope:     "haha",
+	})
+	if err != nil {
+		panic(err)
 	}
+	fmt.Println("reply------>", reply)
 
 }
 
