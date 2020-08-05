@@ -1,0 +1,7 @@
+version: "v1"
+sentinel:
+  app:
+    name: rate-limit-demo
+  log:
+    metric:
+      maxFileCount: 7

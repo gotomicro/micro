@@ -3,6 +3,7 @@ module micro
 go 1.14
 
 require (
+	github.com/alibaba/sentinel-golang v0.5.0 // indirect
 	github.com/coreos/etcd v3.3.22+incompatible
 	github.com/coreos/go-semver v0.3.0 // indirect
 	github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf // indirect
