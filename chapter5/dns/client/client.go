@@ -3,26 +3,22 @@ package main
 import (
 	"context"
 	"github.com/labstack/gommon/log"
-	"go.etcd.io/etcd/clientv3"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/resolver"
-	pb "micro/chapter3/examples/helloworld"
-	"micro/mygrpc/resolver/etcdv3"
+	pb "micro/chapter4/examples/helloworld"
+	"os"
 	"time"
 )
 
 func main() {
-	cc, err := clientv3.New(clientv3.Config{
-		Endpoints:        []string{"127.0.0.1:2379"},
-		AutoSyncInterval: 0,
-		DialTimeout:      Duration("1s"),
-	})
-	if err != nil {
-		panic(err)
-	}
-	resolver.Register(etcdv3.NewResolver(cc))
+	// 设置日志格式
+	log.SetHeader(`{"time":"${time_rfc3339}","level":"${level}","file":"${short_file}","line":"${line}"}`)
+	// 全局日志级别
+	log.SetLevel(log.DEBUG)
+	log.Infof("server start, pid = %d", os.Getpid())
+
+	resolver.Register(resolver.Get("dns"))
 	c := pb.NewGreeterClient(newGRPCClient())
-	// Contact the server and print out its response.
 	name := "goto micro"
 	for {
 		rsp, err := c.SayHello(context.Background(), &pb.HelloRequest{Name: name})
@@ -49,7 +45,7 @@ func newGRPCClient() *grpc.ClientConn {
 	options := []grpc.DialOption{
 		grpc.WithInsecure(),
 	}
-	cc, err := grpc.DialContext(ctx, "etcd:///micro", options...)
+	cc, err := grpc.DialContext(ctx, "dns:///micro", options...)
 
 	if err != nil {
 		panic(err)

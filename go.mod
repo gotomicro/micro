@@ -13,7 +13,7 @@ require (
 	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/prometheus/common v0.10.0
 	github.com/spf13/pflag v1.0.5 // indirect
-	go.etcd.io/etcd v3.3.22+incompatible
+	go.etcd.io/etcd v3.3.25+incompatible
 	go.uber.org/zap v1.15.0 // indirect
 	golang.org/x/net v0.0.0-20200625001655-4c5254603344
 	google.golang.org/grpc v1.30.0

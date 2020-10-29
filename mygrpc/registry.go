@@ -19,6 +19,7 @@ type Registry struct {
 
 //DefaultRegInfTTL default ttl of server info in registry
 const DefaultRegInfTTL = time.Second * 50
+const resolverTimeOut = time.Second * 2
 
 type RegistryOption struct {
 	TTL time.Duration
