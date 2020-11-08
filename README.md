@@ -8,3 +8,6 @@ micro
 // chapter4 oauth2
 * go run chapter4/examples/server/server.go
 * go run chapter4/examples/client/client.go
+
+// chapter5 服务发现  etcd模式+dns模式
+

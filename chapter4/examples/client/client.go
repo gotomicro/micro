@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/resolver"
 	pb "micro/chapter4/examples/helloworld"
-	"micro/mygrpc"
+	"micro/mygrpc/resolver/etcdv3"
 	"time"
 )
 
@@ -20,7 +20,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	resolver.Register(mygrpc.NewResolver(cc))
+	resolver.Register(etcdv3.NewResolver(cc))
 	c := pb.NewGreeterClient(newGRPCClient())
 	// Contact the server and print out its response.
 	reply, err := c.Token(context.Background(), &pb.TokenRequest{

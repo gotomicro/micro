@@ -1,4 +1,4 @@
-package mygrpc
+package etcdv3
 
 import (
 	"context"
@@ -11,9 +11,9 @@ import (
 	"time"
 )
 
-const (
-	resolverTimeOut = 10 * time.Second
-)
+func RegisterResolver() {
+	resolver.Register(&Resolver{})
+}
 
 type Resolver struct {
 	cli *clientv3.Client
