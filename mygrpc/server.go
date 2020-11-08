@@ -2,15 +2,17 @@ package mygrpc
 
 import (
 	"context"
-	"github.com/prometheus/common/log"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 	"net"
 	"os"
 	"os/signal"
 	"reflect"
 	"syscall"
 	"time"
+
+	"github.com/prometheus/common/log"
+	"golang.org/x/net/netutil"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 //Server wrapper of grpc server
@@ -98,7 +100,7 @@ func (sw *App) Start() error {
 	sw.DumpGrpcName()
 	// Register reflection service on gRPC server.
 	reflection.Register(sw.s)
-	if err := sw.s.Serve(lis); err != nil {
+	if err := sw.s.Serve(netutil.LimitListener(lis, 100)); err != nil {
 		return err
 	}
 	return nil

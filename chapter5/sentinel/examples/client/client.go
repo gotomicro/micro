@@ -13,7 +13,7 @@ import (
 
 func main() {
 	cc, err := clientv3.New(clientv3.Config{
-		Endpoints:        []string{"127.0.0.1:2379"},
+		Endpoints:        []string{"192.168.0.105:2379"},
 		AutoSyncInterval: 0,
 		DialTimeout:      Duration("1s"),
 	})
@@ -23,17 +23,16 @@ func main() {
 	resolver.Register(mygrpc.NewResolver(cc))
 	c := pb.NewGreeterClient(newGRPCClient())
 	// Contact the server and print out its response.
-	reply, err := c.Token(context.Background(), &pb.TokenRequest{
-		GrantType: "password",
-		Username:  "test",
-		Password:  "test",
-		Scope:     "haha",
-	})
-	if err != nil {
-		panic(err)
+	for i := 0; i < 40000; i++ {
+		reply, _ := c.Token(context.Background(), &pb.TokenRequest{
+			GrantType: "password",
+			Username:  "test",
+			Password:  "test",
+			Scope:     "haha",
+		})
+		fmt.Println("reply------>", reply, i)
+		time.Sleep(5 * time.Millisecond)
 	}
-	fmt.Println("reply------>", reply)
-
 }
 
 func Duration(str string) time.Duration {

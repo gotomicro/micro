@@ -16,6 +16,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/alibaba/sentinel-golang/api"
 	"github.com/alibaba/sentinel-golang/core/flow"
@@ -34,13 +35,10 @@ func NewGlobalRateLimiterBuilder(rejectAction func(interface{}, grpc.UnaryHandle
 		return nil, err
 	}
 
-	// 配置一条限流规则
+	// 将远程配置load下来
 	_, err = flow.LoadRules([]*flow.FlowRule{
 		{
-			Resource:        "global-limit",
-			MetricType:      flow.QPS,
-			Count:           100,
-			ControlBehavior: flow.Reject,
+			Resource:        "created-from-dashboard",
 		},
 	})
 	if err != nil {
@@ -52,8 +50,9 @@ func NewGlobalRateLimiterBuilder(rejectAction func(interface{}, grpc.UnaryHandle
 func (gb *GlobalRateLimiterBuilder) GlobalRateLimit(ctx context.Context,
 	req interface{},
 	info *grpc.UnaryServerInfo,
-	handler grpc.UnaryHandler) (resp interface{}, err error) {
-	_, err = api.Entry("global-limit")
+	handler grpc.UnaryHandler) (interface{}, error) {
+	en, err := api.Entry("created-from-dashboard")
+	fmt.Println(en)
 	if err != nil {
 		// 请求被拒绝，返回error
 		return gb.RejectAction(req, handler)

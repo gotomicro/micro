@@ -3,12 +3,14 @@ package mygrpc
 import (
 	"context"
 	"encoding/json"
+	"time"
+
 	"go.etcd.io/etcd/clientv3"
+	"google.golang.org/grpc/attributes"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/resolver"
 	"google.golang.org/grpc/status"
-	"time"
 )
 
 type Registry struct {
@@ -17,7 +19,7 @@ type Registry struct {
 	lsCli  clientv3.Lease
 }
 
-//DefaultRegInfTTL default ttl of server info in registry
+// DefaultRegInfTTL default ttl of server info in registry
 const DefaultRegInfTTL = time.Second * 50
 
 type RegistryOption struct {
@@ -25,7 +27,7 @@ type RegistryOption struct {
 }
 type RegistryOptions func(o *RegistryOption)
 
-//NewRegisty create a reistry for registering server addr
+// NewRegisty create a reistry for registering server addr
 func NewRegisty(cli *clientv3.Client) *Registry {
 	return &Registry{
 		cli:   cli,
@@ -38,7 +40,7 @@ func (er *Registry) Register(ctx context.Context, serverName string, addr string
 	info := resolver.Address{
 		Addr:       addr,
 		ServerName: serverName,
-		Attributes: nil,
+		Attributes: attributes.New("group", "WEB"),
 	}
 
 	if upBytes, err = json.Marshal(info); err != nil {

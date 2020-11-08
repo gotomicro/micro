@@ -27,7 +27,7 @@ func main() {
 	log.Infof("server start, pid = %d", os.Getpid())
 
 	cc, err := clientv3.New(clientv3.Config{
-		Endpoints:        []string{"127.0.0.1:2379"},
+		Endpoints:        []string{"192.168.0.105:2379"},
 		AutoSyncInterval: 0,
 		DialTimeout:      Duration("1s"),
 	})

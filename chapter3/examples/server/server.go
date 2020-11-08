@@ -55,3 +55,5 @@ func (s *Hello) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRep
 	log.Infof("receive req : %v", *in)
 	return &pb.HelloReply{Message: "Hello " + in.Name}, nil
 }
+
+type UserService struct {}
